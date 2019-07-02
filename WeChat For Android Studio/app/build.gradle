@@ -1,26 +1,62 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.juns.wechat"
-        minSdkVersion 11
-        targetSdkVersion 21
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        resValue "string", "tray__authority", "${applicationId}.tray"
+        //cpu框架支持
+        splits {
+            abi {
+                enable true
+                reset()
+                include 'x86', 'armeabi-v7a', 'x86_64'
+                universalApk true
+            }
+        }
     }
-
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+//        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.config
+        }
+    }
+    useLibrary 'org.apache.http.legacy'
+    configurations {
+        all {
+            exclude module: 'httpclient'
+            exclude module: 'commons-logging'
         }
     }
 }
-
+//android {
+//    useLibrary 'org.apache.http.legacy'
+//}
 dependencies {
-    compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.android.support:support-v4:18.0.0'
+//    compile 'commons-httpclient:commons-httpclient:3.1'
+//    compile 'com.android.support:appcompat-v7:18.0.0'
+//    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.android.support:cardview-v7:25.4.0'
+//    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile 'com.android.support:support-v4:25.4.0'
+
+
     compile files('libs/JsonUtils.jar')
     compile files('libs/JunsNetHelper.jar')
     compile files('libs/afinal-0.3.32-bin.jar')
